@@ -1,0 +1,60 @@
+version: '3'
+services:
+  snmptrapd:
+    build: ./snmptrapd
+    ports:
+      - "162:162/udp"
+    links:
+      - fluentd
+    extra_hosts:
+      - "ubu18:192.168.27.135"
+      - "vyos1:192.168.27.100"
+    # logging:
+    #   driver: "fluentd"
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     tag: httpd.access
+
+  fluentd:
+    build: ./fluentd
+    # volumes:
+    #   - ./fluentd/conf:/fluentd/etc
+    # ports:
+      # - "24224:24224"
+      # - "514:514/udp"
+    links:
+      - mongo
+    # extra_hosts:
+    #   - "snmpd:192.168.27.171"
+
+  mongo:
+    image: mongo
+    restart: always
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    # environment:
+    #   ME_CONFIG_MONGODB_ADMINUSERNAME: root
+    #   ME_CONFIG_MONGODB_ADMINPASSWORD: example
+
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+  #   environment:
+  #     - "discovery.type=single-node"
+  #   expose:
+  #     - "9200"
+  #   ports:
+  #     - "9200:9200"
+
+  # kibana:
+  #   image: kibana:7.2.0
+  #   links:
+  #     - "elasticsearch"
+  #   ports:
+  #     - "5601:5601"
