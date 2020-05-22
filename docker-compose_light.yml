@@ -1,0 +1,57 @@
+version: '3'
+services:
+  # snmptrapd:
+  #   build: ./snmptrapd
+  #   ports:
+  #     - "8162:8162/udp"
+  #   links:
+  #     - fluentd
+  #   extra_hosts:
+  #     - "jm00z0test1:192.168.27.135"
+  #     - "jc02z1vyos1:192.168.27.100"
+
+  # fluentd:
+  #   build: ./fluentd
+  #   links:
+  #     - influxdb
+  #   extra_hosts:
+  #     - "jm00z0test1:192.168.27.135"
+  #     - "jc02z1vyos1:192.168.27.100"
+
+  # influxdb:
+  #   build: ./influxdb
+  #   restart: always
+  
+  # chronograf:
+  #   image: chronograf:alpine
+  #   restart: always
+  #   links:
+  #     - influxdb
+  #   ports:
+  #     - "8888:8888"
+  
+  ### snmptrap-exporter
+  snmptrap-exporter:
+    build: ./snmptrap-exporter
+    ports: 
+      - 8000:8000
+    restart: always
+
+  #### prometheus compose is below (for test) .
+  prometheus:
+    build: ./prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus/data:/prometheus/data
+    command: "--config.file=/etc/prometheus/prometheus.yaml"
+    ports:
+      - 9090:9090
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: always
+

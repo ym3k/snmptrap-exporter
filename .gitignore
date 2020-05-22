@@ -31,3 +31,5 @@
 vendor/bundle
 /.vscode
 tags
+.ruby-version
+.python-version

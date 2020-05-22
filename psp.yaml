@@ -1,0 +1,62 @@
+# psp.yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: switch-snmp
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  'runtime/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+spec:
+  privileged: false
+  # Required to prevent escalations to root.
+  allowPrivilegeEscalation: false
+  # This is redundant with non-root + disallow privilege escalation,
+  # but we can provide it for defense in depth.
+  requiredDropCapabilities:
+    - ALL
+  # Allow core volume types.
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    # Assume that persistentVolumes set up by the cluster admin are safe to use.
+    - 'persistentVolumeClaim'
+    - 'hostPath'
+  allowedHostPaths:
+  - pathPrefix: '/mnt/nvme0n1/k8s/switch-snmp'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  hostPorts:
+  - min: 8162
+    max: 8162
+  - min: 8000
+    max: 8000
+  runAsUser:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 65534
+        max: 65534
+  runAsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 65534
+        max: 65534
+  seLinux:
+    # This policy assumes the nodes are using AppArmor rather than SELinux.
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 65534
+        max: 65534
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 65534
+        max: 65534
+  readOnlyRootFilesystem: false
