@@ -23,28 +23,28 @@ services:
       # - "24224:24224"
       # - "514:514/udp"
     links:
-      # - mongo
-      - influxdb
-    extra_hosts:
+      - mongo
+      # - influxdb
+    # extra_hosts:
     #   - "snmpd:192.168.27.171"
-      - "jm00z0test1:192.168.27.135"
-      - "jc02z1vyos1:192.168.27.100"
+      # - "jm00z0test1:192.168.27.135"
+      # - "jc02z1vyos1:192.168.27.100"
 
-  influxdb:
-    build: ./influxdb
-    restart: always
-  
-  chronograf:
-    image: chronograf:alpine
-    restart: always
-    links:
-      - influxdb
-    ports:
-      - "8888:8888"
-  
-  # mongo:
-  #   image: mongo
+  # influxdb:
+  #   build: ./influxdb
   #   restart: always
+  
+  # chronograf:
+  #   image: chronograf:alpine
+  #   restart: always
+  #   links:
+  #     - influxdb
+  #   ports:
+  #     - "8888:8888"
+  
+  mongo:
+    image: mongo
+    restart: always
     # volumes:
     #   - "./mongo:/data"
     # environment:
