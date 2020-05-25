@@ -26,7 +26,7 @@ Promethus scrape with snmptrap-exporter that counts traps occured within a fixed
 default is MongoDB. 
 
 ## use InfluxDB
-1. edit docker-compose.yaml, comment out mongo service and uncomment out infuxdb.
+1. edit docker-compose.yaml, comment out mongo service and uncomment out influxdb.
 1. edit fluend/fluent.conf, fix to use influxdb.
 1. edit snmptrap-exporter/Dockerfile, comment-out.uncomment-out RUN&ADD block.
 
