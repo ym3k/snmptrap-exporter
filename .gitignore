@@ -35,9 +35,9 @@ tags
 .python-version
 
 
-./docker-build.sh
-./namespace.yaml
-./psp.yaml
-./role.yaml
-./rolebindings.yaml
-./deploy.yaml
+docker-build.sh
+namespace.yaml
+psp.yaml
+role.yaml
+rolebinding.yaml
+deploy.yaml
